@@ -327,7 +327,9 @@ class ClientCore < Extension
 
     modnameprovided = mod
     suffix = nil
-    if not client.binary_suffix
+    # If there is no supported suffix *or* if the one supported suffix indicates
+    # ELF, then allow ELF files which have no '.elf' suffix.
+    if client.binary_suffix.blank? || (client.binary_suffix.size == 1 && client.binary_suffix.first == 'elf')
       suffix = ''
     elsif client.binary_suffix.size > 1
       client.binary_suffix.each { |s|
